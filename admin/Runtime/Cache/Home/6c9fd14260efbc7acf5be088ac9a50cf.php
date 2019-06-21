@@ -1,0 +1,109 @@
+<?php if (!defined('THINK_PATH')) exit();?><!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,initial-scale=1.0,user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>编辑</title>
+  <link href="/static/skin/default/style.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" charset="utf-8" src="/static/scripts/jquery/jquery-1.11.2.min.js"></script>
+  <script src="/static/scripts/layer/layer.min.js"></script>
+  <script src="/static/scripts/laydate/laydate.js"></script>
+  <script type="text/javascript" charset="utf-8" src="/static/scripts/webuploader/webuploader.min.js"></script>
+  <script type="text/javascript" charset="utf-8" src="/static/js/uploader.js"></script>
+  <script type="text/javascript" charset="utf-8" src="/static/js/laymain.js"></script>
+  <script type="text/javascript" charset="utf-8" src="/static/js/common.js"></script>
+  <script src="/static/scripts/jquery/jquery.form.min.js"></script>
+  <script src="/static/js/base.js"></script>
+</head>
+
+<body class="mainbody">
+
+<form method="post" action="/grey/config_edit_pop/wapi/ajax.html" id="form1">
+  <!--导航栏-->
+
+  <div class="line10"></div>
+  <!--/导航栏-->
+
+  <!--内容-->
+  <div id="floatHead" class="content-tab-wrap">
+    <div class="content-tab">
+      <div class="content-tab-ul-wrap">
+        <ul>
+          <li><a class="selected" href="javascript:;">添加</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content">
+
+
+
+    <dl>
+      <dt>配置名称</dt>
+      <dd>
+        <input class="input" name="config_name" value="<?php echo ($data["config_name"]); ?>"/>
+      </dd>
+    </dl>
+    
+    <dl>
+      <dt>服务器地址</dt>
+      <dd>
+        <input class="input" name="server_host" value="<?php echo ($data["server_host"]); ?>"/>
+      </dd>
+    </dl>
+
+  <dl>
+      <dt>服务器端口</dt>
+      <dd>
+        <input class="input" name="server_port" value="<?php echo ($data["server_port"]); ?>"/>
+      </dd>
+    </dl>
+     
+      <dl>
+      <dt>服务器DB号</dt>
+      <dd>
+        <input class="input" name="server_db" value="<?php echo ($data["server_db"]); ?>"/>
+      </dd>
+    </dl>
+     
+      <dl>
+      <dt>服务器密码</dt>
+      <dd>
+        <input class="input" name="server_password" value="<?php echo ($data["server_password"]); ?>"/>
+      </dd>
+    </dl>
+     
+       <input type="hidden" name="id" value="<?php echo ($data["id"]); ?>" />
+    
+    </div>
+
+    <div class="page-footer">
+      <div class="btn-wrap">
+        <input type="button" name="btnSubmit" value="保存" id="btnSubmit" class="btn btn-submit" data-callback="successCall" />
+      </div>
+    </div>
+
+    <!--/内容-->
+
+    <!--工具栏-->
+
+    <!--/工具栏-->
+</form>
+</body>
+<script language="javascript">
+
+  function successCall()
+  {
+    window.parent.location.reload();
+  }
+
+  $(function(){
+
+
+  });
+
+
+</script>
+</html>
