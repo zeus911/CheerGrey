@@ -6,8 +6,8 @@ class MainController extends AuthController
     
 	public function index()
 	{
-		$dUserInfo=D('UserInfo');
-		$userInfo=$dUserInfo->getCurrentUserInfo();
+		
+		$userInfo=C('CURRENT_USER_INFO');
 		
 		$this->assign('userInfo',$userInfo);
 		
@@ -28,6 +28,12 @@ class MainController extends AuthController
 	
 	public function main()
 	{
+		
+		$dAuthInfo=D('AuthInfo');
+		$currentUserInfo=$dAuthInfo->getCurrentUserInfo();
+		
+		$this->assign('currentUserInfo',$currentUserInfo);
+		
 		$this->display('main');
 	}
 }

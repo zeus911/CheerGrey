@@ -6,11 +6,14 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <title>编辑</title>
   <link href="/static/skin/default/style.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="/static/scripts/chosen/css/chosen.css?v=<php>print_r(time());</php>">
+  
   <script type="text/javascript" charset="utf-8" src="/static/scripts/jquery/jquery-1.11.2.min.js"></script>
   <script src="/static/scripts/layer/layer.min.js"></script>
   <script src="/static/scripts/laydate/laydate.js"></script>
-  <script type="text/javascript" charset="utf-8" src="/static/scripts/webuploader/webuploader.min.js"></script>
-  <script type="text/javascript" charset="utf-8" src="/static/js/uploader.js"></script>
+  
+  <script src="/static/scripts/chosen/js/chosen.jquery.js?v=<php>print_r(time());</php>"></script>
+  
   <script type="text/javascript" charset="utf-8" src="/static/js/laymain.js"></script>
   <script type="text/javascript" charset="utf-8" src="/static/js/common.js"></script>
   <script src="/static/scripts/jquery/jquery.form.min.js"></script>
@@ -39,23 +42,9 @@
   <div class="tab-content">
 
     <dl>
-      <dt>配置服务器</dt>
-      <dd>
-          <div class="rule-single-select">
-          <select name="config_id">
-            <option value="0">选择配置服务器</option>
-            <foreach name="pageOption.configRuleList" item="vo" key="k">
-             <option value="{$k}" <eq name="data.config_id" value="$k">selected="selected"</eq>>{$vo}</option>
-            </foreach>
-          </select>
-          </div>
-      </dd>
-    </dl>
-
-    <dl>
       <dt>站点名称</dt>
       <dd>
-        <input class="input" name="rule_site_name" value="{$data.rule_site_name}"/>
+        <input class="input" name="rule_site_name" value="{$data.rule_site_name}" style="width: 300px;"/>
       </dd>
     </dl>
     
@@ -77,7 +66,7 @@
     <dl>
       <dt>HOST规则</dt>
       <dd>
-        <input class="input" name="http_host" value="{$data.http_host}"/>
+        <input class="input" name="http_host" value="{$data.http_host}" style="width: 300px;"/>
       </dd>
     </dl>
     
@@ -98,16 +87,24 @@
      <dl>
       <dt>全量节点</dt>
       <dd>
-        <input class="input" name="prod_node" value="{$data.prod_node}"/>
-        <span style="padding-left: 10px; color: #B41316">格式:@backend_prod_xxx,xxx取值范围(0-9a-z_)</span>
+        <select name="prod_backend_id" class="remote_select" style="width: 300px;">
+            <option value="0">选择后端节点</option>
+            <foreach name="pageOption.backendList" item="vo" key="k">
+             <option value="{$k}" <eq name="data.prod_backend_id" value="$k">selected="selected"</eq>>{$vo}</option>
+            </foreach>
+        </select>
       </dd>
     </dl>
      
      <dl>
       <dt>灰度节点</dt>
       <dd>
-        <input class="input" name="grey_node" value="{$data.grey_node}"/>
-        <span style="padding-left: 10px; color: #B41316">格式:@backend_grey_xxx,xxx取值范围(0-9a-z_)</span>
+        <select name="grey_backend_id" class="remote_select" style="width: 300px;">
+            <option value="0">选择后端节点</option>
+            <foreach name="pageOption.backendList" item="vo" key="k">
+             <option value="{$k}" <eq name="data.grey_backend_id" value="$k">selected="selected"</eq>>{$vo}</option>
+            </foreach>
+        </select>
       </dd>
     </dl>
      
@@ -150,7 +147,8 @@
 
   $(function(){
 
-
+      $('.remote_select').chosen();
+	  
   });
 
 

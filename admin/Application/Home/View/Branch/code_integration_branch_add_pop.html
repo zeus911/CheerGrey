@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,initial-scale=1.0,user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>添加</title>
+  <link href="/static/skin/default/style.css" rel="stylesheet" type="text/css" />
+  
+   <link rel="stylesheet" type="text/css" href="/static/scripts/chosen/css/chosen.css?v=<php>print_r(time());</php>">
+  
+  <script type="text/javascript" charset="utf-8" src="/static/scripts/jquery/jquery-1.11.2.min.js"></script>
+  <script src="/static/scripts/layer/layer.min.js"></script>
+  <script src="/static/scripts/laydate/laydate.js"></script>
+  
+  <script src="/static/scripts/chosen/js/chosen.jquery.js?v=<php>print_r(time());</php>"></script>
+  
+  <script type="text/javascript" charset="utf-8" src="/static/js/laymain.js"></script>
+  <script type="text/javascript" charset="utf-8" src="/static/js/common.js"></script>
+  <script src="/static/scripts/jquery/jquery.form.min.js"></script>
+  <script src="/static/js/base.js"></script>
+</head>
+
+<body class="mainbody">
+
+  <div class="line10"></div>
+  <!--/导航栏-->
+
+  <!--内容-->
+  <div id="floatHead" class="content-tab-wrap">
+    <div class="content-tab">
+      <div class="content-tab-ul-wrap">
+        <ul>
+          <li><a class="selected" href="javascript:;">添加</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+ <form method="get" action="/branch/code_integration_branch_add_pop.html" id="form_search">
+   
+  <div class="tab-content">
+       
+       <dl>
+		<dt>产品组</dt>
+		<dd>
+          <select class="remote_select" name="department_id" style="width: 80%;">
+            <option value="">选择产品组</option>
+            <foreach name="pageOption.departmentKvList" item="vo" key="k">
+            	<option value="{$k}" <eq name="option.department_id" value="$k">selected="selected"</eq>>{$vo}</option>
+            </foreach>
+          </select>
+          
+	    </dd>
+
+		</dl>
+ 	
+ 		<dl>
+		<dt>关联分支任务</dt>
+		<dd>
+          <select class="remote_select" name="branch_task_id" style="width: 80%;">
+            <option value="0">选择分支任务</option>
+             <foreach name="pageOption.codeBranchTaskList" item="vo">
+            	<option value="{$vo.id}">{$vo.task_name}</option>
+            </foreach>
+          </select>
+          
+	    </dd>
+
+		</dl>
+
+    </div>
+    <input type="hidden" name="integration_task_id" value="{$option.integration_task_id}" />
+    </form>
+    
+
+   <form action="/branch/code_integration_branch_add_pop/wapi/ajax.html" method="post" id="form_add">
+    <div class="page-footer">
+      <div class="btn-wrap">
+        <input type="button" name="btnSubmit" value="保存" id="btnSubmit" class="btn btn-submit" data-callback="successCall" />
+        <input type="hidden" name="code_integration_task_id" value="{$option.integration_task_id}" />
+        <input type="hidden" name="code_branch_task_id" value="0" />
+      </div>
+    </div> 
+   </form>
+</body>
+
+<script language="javascript">
+
+	function successCall(){
+		window.parent.parent.location.reload();
+	}
+
+	$(function(){
+
+		$('.remote_select').chosen();
+		
+		$('select[name="department_id"]').chosen().change(function(){
+			$('#form_search').submit();
+		});
+		
+		$('select[name="branch_task_id"]').chosen().change(function(){
+			var thisVal=$(this).val();
+			$('input[name="code_branch_task_id"]').val(thisVal);
+		});
+	});
+
+
+</script>
+
+</html>

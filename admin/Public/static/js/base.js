@@ -125,9 +125,9 @@ $(function(){
 	);
 	
 	
-	$('.btn-action').click(function(){
+	function actionCallBack(thisObj){
   
-		var pThis=$(this);
+		var pThis=thisObj;
 		
 		var process=pThis.data('process');
 		if(process)
@@ -137,7 +137,17 @@ $(function(){
 		
 		pThis.data('process',1);
 		
+		
 		var url=pThis.data('url');
+		
+		var beforeCallBack=pThis.data('beforecall');
+		var afterCallBack=pThis.data('aftercall');
+		var successCallBack=pThis.data('callback');
+		
+		if(window[beforeCallBack]){
+			window[beforeCallBack].call(this,pThis);
+		}
+
 		
 		$.ajax({
 		   url:url,
@@ -145,7 +155,12 @@ $(function(){
 		   cache:false,
 		   dataType:'json',
 		   complete:function(XHR, TS){
+			   
 			   pThis.data('process',0);
+			   
+			   if(window[afterCallBack]){
+					window[afterCallBack].call(this,pThis);
+				}
 			   
 		   },
 		   error:function (XMLHttpRequest, textStatus, errorThrown){
@@ -154,21 +169,28 @@ $(function(){
 		   success:function(data, textStatus, jqXHR){
 			   
 			   var msg=data.msg;
+			   var errorCode=''+data.error_code;
+
 			   if(!msg)
 			   {
 			      msg='网络异常,请稍后再试!';
 			   }
 			   
-			   if(data.error_code!='0')
+			   if(errorCode!='0'&&errorCode!='100')
 			   {
 				   alertMsg(msg);
 				   return;
 			   }
-			   
-			    var callBack=eval(pThis.data('callback'));
+
+			    var callBack=window[successCallBack];
 				if(!callBack)
 				{
 				   callBack=function(){window.location.href=window.location.href;};
+				}
+			   
+			    if(errorCode=='100'){
+				   callBack.call(this,data.data);
+				   return;
 				}
 			   
 			    successMsg(msg,function(){callBack.call(callBack,data.data)});
@@ -176,8 +198,24 @@ $(function(){
 		   });
 		
      
-    });
+    };
 
-
+	$('.btn-action').click(function(){
+		var pThis=$(this);
+		actionCallBack(pThis);
+	});
+    
+	$('.btn-action-confirm').click(function(){
+		var pThis=$(this);
+		
+		layer.confirm('你确定要执行当前操作吗?', {
+		  btn: ['确认','取消'],icon:3
+		}, function(){
+		  actionCallBack(pThis);
+		}, function(){
+		  
+		});
+		
+	});
 	
 });

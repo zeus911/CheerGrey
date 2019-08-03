@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,initial-scale=1.0,user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>编辑</title>
+  <link href="/static/skin/default/style.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" charset="utf-8" src="/static/scripts/jquery/jquery-1.11.2.min.js"></script>
+  <script src="/static/scripts/layer/layer.min.js"></script>
+  <script src="/static/scripts/laydate/laydate.js"></script>
+  <script type="text/javascript" charset="utf-8" src="/static/js/laymain.js"></script>
+  <script type="text/javascript" charset="utf-8" src="/static/js/common.js"></script>
+  <script src="/static/scripts/jquery/jquery.form.min.js"></script>
+  <script src="/static/js/base.js"></script>
+</head>
+
+<body class="mainbody">
+
+<form method="post" action="/user/user_info_edit_pop/wapi/ajax.html" id="form1">
+  <!--导航栏-->
+
+  <div class="line10"></div>
+  <!--/导航栏-->
+
+  <!--内容-->
+  <div id="floatHead" class="content-tab-wrap">
+    <div class="content-tab">
+      <div class="content-tab-ul-wrap">
+        <ul>
+          <li><a class="selected" href="javascript:;">编辑</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content">
+
+
+    <dl>
+      <dt>用户名</dt>
+      <dd>
+        <span>{$data.user_name}</span>
+      </dd>
+    </dl>
+    
+     <dl>
+      <dt>姓名</dt>
+      <dd>
+        <span>{$data.realname}</span>
+      </dd>
+    </dl>
+    
+    <dl>
+      <dt>邮箱</dt>
+      <dd>
+        <span>{$data.email}</span>
+      </dd>
+    </dl>
+    
+    <dl>
+      <dt>手机</dt>
+      <dd>
+        <span>{$data.mobile}</span>
+      </dd>
+    </dl>
+    
+    <dl>
+      <dt>产品组</dt>
+      <dd>
+          <div class="rule-single-select">
+          <select name="department_id">
+            <option value="0">选择产品组</option>
+            <foreach name="pageOption.departmentList" item="vo" key="k">
+				<option value="{$k}" <eq name="data.department_id" value="$k">selected="selected"</eq>>{$vo}</option>
+            </foreach>
+          </select>
+          </div>
+      </dd>
+    </dl>
+    
+    <dl>
+      <dt>权限类别</dt>
+      <dd>
+          <div class="rule-single-select">
+          <select name="role_group_code">
+            <option value="">选择权限类别</option>
+            <foreach name="pageOption.roleGroupList" item="vo" key="k">
+				<option value="{$k}" <eq name="data.role_group_code" value="$k">selected="selected"</eq>>{$vo}</option>
+            </foreach>
+          </select>
+          </div>
+      </dd>
+    </dl>
+    
+    
+    <dl>
+      <dt>权限级别</dt>
+      <dd>
+          <div class="rule-single-select">
+          <select name="role_group_level">
+            <option value="">选择权限级别</option>
+            <foreach name="pageOption.roleLevelList" item="vo" key="k">
+             <option value="{$k}" <eq name="data.role_group_level" value="$k">selected="selected"</eq>>{$vo}</option>
+            </foreach>
+          </select>
+          </div>
+      </dd>
+    </dl>
+    
+
+     
+    <dl>
+      <dt>站点状态</dt>
+      <dd>
+          <div class="rule-single-select">
+          <select name="state">
+            <option value="-1">选择状态</option>
+            <foreach name="pageOption.stateList" item="vo" key="k">
+				<option value="{$k}" <eq name="data.state" value="$k">selected="selected"</eq>>{$vo}</option>
+            </foreach>
+          </select>
+          </div>
+      </dd>
+    </dl>
+      
+    <input type="hidden" name="id" value="{$data.id}" />
+    </div>
+
+    <div class="page-footer">
+      <div class="btn-wrap">
+        <input type="button" name="btnSubmit" value="保存" id="btnSubmit" class="btn btn-submit" data-callback="successCall" />
+      </div>
+    </div>
+
+    <!--/内容-->
+
+    <!--工具栏-->
+
+    <!--/工具栏-->
+</form>
+</body>
+<script language="javascript">
+
+  function successCall()
+  {
+    window.parent.location.reload();
+  }
+
+  $(function(){
+
+
+  });
+
+
+</script>
+</html>

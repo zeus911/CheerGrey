@@ -1,16 +1,19 @@
-<?php if (!defined('THINK_PATH')) exit();?><!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,initial-scale=1.0,user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <title>编辑</title>
+  <title>添加</title>
   <link href="/static/skin/default/style.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="/static/scripts/chosen/css/chosen.css?v=<php>print_r(time());</php>">
+  
   <script type="text/javascript" charset="utf-8" src="/static/scripts/jquery/jquery-1.11.2.min.js"></script>
   <script src="/static/scripts/layer/layer.min.js"></script>
   <script src="/static/scripts/laydate/laydate.js"></script>
-  <script type="text/javascript" charset="utf-8" src="/static/scripts/webuploader/webuploader.min.js"></script>
-  <script type="text/javascript" charset="utf-8" src="/static/js/uploader.js"></script>
+ 
+  <script src="/static/scripts/chosen/js/chosen.jquery.js?v=<php>print_r(time());</php>"></script>
+ 
   <script type="text/javascript" charset="utf-8" src="/static/js/laymain.js"></script>
   <script type="text/javascript" charset="utf-8" src="/static/js/common.js"></script>
   <script src="/static/scripts/jquery/jquery.form.min.js"></script>
@@ -19,7 +22,7 @@
 
 <body class="mainbody">
 
-<form method="post" action="/grey/config_edit_pop/wapi/ajax.html" id="form1">
+<form method="post" action="/branch/code_integration_task_add_pop/wapi/ajax.html" id="form1">
   <!--导航栏-->
 
   <div class="line10"></div>
@@ -30,7 +33,7 @@
     <div class="content-tab">
       <div class="content-tab-ul-wrap">
         <ul>
-          <li><a class="selected" href="javascript:;">添加</a></li>
+			<li><a class="selected" href="javascript:;">添加</a></li>
         </ul>
       </div>
     </div>
@@ -39,44 +42,29 @@
   <div class="tab-content">
 
 
-
     <dl>
-      <dt>配置名称</dt>
+      <dt>所属产品组</dt>
       <dd>
-        <input class="input" name="config_name" value="<?php echo ($data["config_name"]); ?>"/>
-      </dd>
-    </dl>
-    
-    <dl>
-      <dt>服务器地址</dt>
-      <dd>
-        <input class="input" name="server_host" value="<?php echo ($data["server_host"]); ?>"/>
+           <select class="remote_select" name="department_id" style="width: 80%;">
+            <option value="0">选择产品组</option>
+            <foreach name="pageOption.departmentKvList" item="vo" key="k">
+            	<option value="{$k}" <eq name="option.department_id" value="$k">selected="selected"</eq>>{$vo}</option>
+            </foreach>
+          </select>
+          
       </dd>
     </dl>
 
-  <dl>
-      <dt>服务器端口</dt>
+
+
+    <dl>
+      <dt>集成任务名称</dt>
       <dd>
-        <input class="input" name="server_port" value="<?php echo ($data["server_port"]); ?>"/>
+         <input class="input" type="text" name="title" style="width: 80%">
       </dd>
     </dl>
-     
-      <dl>
-      <dt>服务器DB号</dt>
-      <dd>
-        <input class="input" name="server_db" value="<?php echo ($data["server_db"]); ?>"/>
-      </dd>
-    </dl>
-     
-      <dl>
-      <dt>服务器密码</dt>
-      <dd>
-        <input class="input" name="server_password" value="<?php echo ($data["server_password"]); ?>"/>
-      </dd>
-    </dl>
-     
-       <input type="hidden" name="id" value="<?php echo ($data["id"]); ?>" />
     
+   
     </div>
 
     <div class="page-footer">
@@ -98,8 +86,12 @@
   {
     window.parent.location.reload();
   }
+  
+  
 
   $(function(){
+     
+	  $('.remote_select').chosen();
 
 
   });

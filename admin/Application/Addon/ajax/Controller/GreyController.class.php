@@ -79,6 +79,114 @@ class GreyController extends AuthController
 		$this->ajaxCallMsg(0,'操作成功!');
 	}
 	
+	
+	public function backend_add_pop()
+	{
+		$data=array(
+		    'config_id'=>I('post.config_id',0,'intval'),
+		    'title'=>I('post.title','','trim'),
+			'backend_name'=>I('post.backend_name','','trim'),
+		);
+		
+		
+		$dGreyBackend=D('GreyBackend');
+		
+		$nId=$dGreyBackend->addData($data);
+		
+		if(!$nId)
+		{
+			$msgData=$dGreyBackend->getErrorMsg();
+			$this->ajaxCallMsg($msgData['error_code'],$msgData['msg']);
+		}
+		
+		$this->ajaxCallMsg(0,'操作成功!');
+	}
+	
+	public function backend_edit_pop()
+	{
+		$data=array(
+		    'id'=>I('post.id',0,'intval'),
+		    'config_id'=>I('post.config_id',0,'intval'),
+		    'title'=>I('post.title','','trim'),
+			'backend_name'=>I('post.backend_name','','trim'),
+		);
+		
+		
+		$dGreyBackend=D('GreyBackend');
+		
+		$nId=$dGreyBackend->editData($data);
+		
+		if(!$nId)
+		{
+			$msgData=$dGreyBackend->getErrorMsg();
+			$this->ajaxCallMsg($msgData['error_code'],$msgData['msg']);
+		}
+		
+		$this->ajaxCallMsg(0,'操作成功!');
+	}
+	
+	public function backend_del()
+	{
+		$data=array(
+			'id'=>I('get.id',0,'intval'),
+		);
+		
+		
+		$dGreyBackend=D('GreyBackend');
+		
+		$nId=$dGreyBackend->delData($data);
+		
+		if(!$nId)
+		{
+			$msgData=$dGreyBackend->getErrorMsg();
+			$this->ajaxCallMsg($msgData['error_code'],$msgData['msg']);
+		}
+		
+		$this->ajaxCallMsg(0,'操作成功!');
+	}
+	
+	public function backend_node_add_pop()
+	{
+		$data=array(
+		    'backend_id'=>I('post.backend_id',0,'intval'),
+		    'server_ip'=>I('post.server_ip','','trim'),
+			'server_port'=>I('post.server_port',80,'intval'),
+		);
+		
+		
+		$dGreyBackendNode=D('GreyBackendNode');
+		
+		$nId=$dGreyBackendNode->addData($data);
+		
+		if(!$nId)
+		{
+			$msgData=$dGreyBackendNode->getErrorMsg();
+			$this->ajaxCallMsg($msgData['error_code'],$msgData['msg']);
+		}
+		
+		$this->ajaxCallMsg(0,'操作成功!');
+	}
+	
+	public function backend_node_del_pop()
+	{
+		$data=array(
+			'id'=>I('get.id',0,'intval'),
+		);
+		
+		
+		$dGreyBackendNode=D('GreyBackendNode');
+		
+		$nId=$dGreyBackendNode->delData($data);
+		
+		if(!$nId)
+		{
+			$msgData=$dGreyBackendNode->getErrorMsg();
+			$this->ajaxCallMsg($msgData['error_code'],$msgData['msg']);
+		}
+		
+		$this->ajaxCallMsg(0,'操作成功!');
+	}
+	
 	public function site_add_pop()
 	{
 		$data=array(
@@ -87,8 +195,8 @@ class GreyController extends AuthController
 			'http_host'=>I('post.http_host','','trim'),
 			'http_host_type'=>I('post.http_host_type','','trim'),
 			'mode'=>I('post.mode','','trim'),
-			'prod_node'=>I('post.prod_node','','trim'),
-			'grey_node'=>I('post.grey_node','','trim'),
+			'prod_backend_id'=>I('post.prod_backend_id',0,'intval'),
+			'grey_backend_id'=>I('post.grey_backend_id',0,'intval'),
 		);
 		
 		
@@ -109,13 +217,12 @@ class GreyController extends AuthController
 	{
 		$data=array(
 			'id'=>I('post.id',0,'intval'),
-			'config_id'=>I('post.config_id',0,'intval'),
 		    'rule_site_name'=>I('post.rule_site_name','','trim'),
 			'http_host'=>I('post.http_host','','trim'),
 			'http_host_type'=>I('post.http_host_type','','trim'),
 			'mode'=>I('post.mode','','trim'),
-			'prod_node'=>I('post.prod_node','','trim'),
-			'grey_node'=>I('post.grey_node','','trim'),
+			'prod_backend_id'=>I('post.prod_backend_id',0,'intval'),
+			'grey_backend_id'=>I('post.grey_backend_id',0,'intval'),
 			'state'=>I('post.state',0,'intval'),
 		);
 		
@@ -177,8 +284,12 @@ class GreyController extends AuthController
 	{
 		$data=array(
 			'site_id'=>I('post.site_id',0,'intval'),
-			'tenant_code'=>I('post.tenant_code','','trim'),
+			'match_object'=>I('post.match_object','','trim'),
+			'match_opp'=>I('post.match_opp','','trim'),
+			'match_value'=>I('post.match_value','','trim'),
+			'order_no'=>I('post.order_no',0,'intval'),
 			'mode'=>I('post.mode','','trim'),
+			'backend_id'=>I('post.backend_id',0,'intval'),
 		);
 		
 		
@@ -200,8 +311,12 @@ class GreyController extends AuthController
 		$data=array(
 			'id'=>I('post.id',0,'intval'),
 		   	'site_id'=>I('post.site_id',0,'intval'),
-			'tenant_code'=>I('post.tenant_code','','trim'),
+			'match_object'=>I('post.match_object','','trim'),
+			'match_opp'=>I('post.match_opp','','trim'),
+			'match_value'=>I('post.match_value','','trim'),
+			'order_no'=>I('post.order_no',0,'intval'),
 			'mode'=>I('post.mode','','trim'),
+			'backend_id'=>I('post.backend_id',0,'intval'),
 		);
 		
 		

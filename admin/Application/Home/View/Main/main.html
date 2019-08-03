@@ -1,10 +1,58 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>无标题文档</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,initial-scale=1.0,user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<title>首页</title>
+<link href="/static/skin/default/style.css" rel="stylesheet" type="text/css" />
+<link href="/static/css/pagination.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/static/scripts/jquery/jquery-1.11.2.min.js"></script>
+<script src="/static/scripts/layer/layer.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/static/js/laymain.js"></script>
+<script type="text/javascript" charset="utf-8" src="/static/js/common.js"></script>
+<script type="text/javascript" charset="utf-8" src="/static/js/base.js"></script>
 </head>
+<body class="mainbody">
 
-<body>
+<!--导航栏-->
+<div class="location">
+  <a href="javascript:history.back(-1);" class="back"><i class="iconfont icon-up"></i><span>返回上一页</span></a>
+  <a href="javascript:;"><i class="iconfont icon-home"></i><span>首页</span></a>
+  <i class="arrow iconfont icon-arrow-right"></i>
+  <span>管理中心</span>
+</div>
+<!--/导航栏-->
+
+
+<div class="line10"></div>
+
+<div class="nlist-2">
+  <h3><i class="iconfont icon-setting"></i>站点信息</h3>
+  <ul>
+    <li><p>用户名：{$currentUserInfo.username}</p></li>
+    <li><p>姓名:{$currentUserInfo.realname}</p></li>
+    <li><p>邮箱地址:{$currentUserInfo.email}</p></li>
+    <li><p>角色：{$currentUserInfo.role_group_code}</p></li>
+    <li><p>角色级别：{$currentUserInfo.role_group_level}</p></li>
+    
+  </ul>
+</div>
+
+<div class="line10"></div>
+
+<div class="nlist-2">
+  <h3><i class="iconfont icon-user"></i>角色说明</h3>
+  <ul>
+    <li><p>运维：(角色=maintenance)(级别=1,10,50,100)</p></li>
+    <li><p>开发：(角色=tech)(级别=1)</p></li>
+    <li><p>测试：(角色=test)(级别=1)</p></li>
+    <li><p>SM：(角色=tech)(级别=100)</p></li>
+     <li><p>管理员：(角色=manager)(级别=1,10,50,100)</p></li>
+  </ul>
+</div>
+
 </body>
 </html>
+
+

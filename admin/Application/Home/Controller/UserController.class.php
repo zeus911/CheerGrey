@@ -1,98 +1,49 @@
 <?php
 namespace Home\Controller;
-class UserController extends BaseController 
+class UserController extends AuthController
 {
-    public function check_code_page()
+    public function user_list()
 	{
-		$this->display('check_code_page');
-	}
-	
-	
-	public function check_code_task()
-	{
-		if($this->checkVerify())
-		{		
-			redirect('/');
-			exit();		
-		}
+		$option=array(
+			'page'=>I('post.page',1,'intval'),
+			'pageSize'=>I('post.pageSize',50,'intval'),
+			'kw'=>I('post.kw'),
+			'department_id'=>I('post.department_id',0,'intval'),
+			'role_group_code'=>I('post.role_group_code','','trim'),
+			'role_group_level'=>I('post.role_group_level',0,'intval'),
+			'state'=>I('post.state',-1,'intval'),
+		);
 		
-		$this->display('check_code_task');
-	}
-	
-	public function get_verify()
-	{
-		$uuid=get_user_uuid();
-		
-		if(!check_user_uuid())
-		{
-			cookie('ycj_uuid',$uuid,86400 * 30);
-		}
+		$this->assign('option',$option);
 		
 		
-		$seKey='cheerwaf_';
-		$dataKey=sprintf('%s%s',$seKey,$uuid);
+		$dUserInfo=D('UserInfo');
 		
-		$config=array('seKey'=>$seKey,'imageH'=>50,'imageW'=>200,'useNoise'=>false,'codeSet'=>'1234567890','useCurve'=>false,'length'=>4);
-		$dVerify=new \Think\Verify($config);
-		
-		$seCodeData=$dVerify->entry($id);
-		
-		$code=$seCodeData;
-		
-		if($code)
-		{
-			$redisHandle=\Com\Chw\RedisLib::getInstance('REDIS_DEFAULT');
-			$redisHandle->select(2);
-			$redisHandle->setex($dataKey,300,$code);
-		}	
-	}
-	
-	private function checkVerify()
-	{
-	    $bRet=false;
-		
-		$uuid=get_user_uuid();	
-		if(!check_user_uuid())
-		{
-			return $bRet;
-		}
-		
-		$code=I('post.code_val','');
-		if(!$code)
-		{
-			return $bRet;
-		}
-		
-		$seKey='cheerwaf_';
-		$dataKey=sprintf('%s%s',$seKey,$uuid);
+		$pageOption=$dUserInfo->getShowMap();
+		$this->assign('pageOption',$pageOption);
 
-		$redisHandle=\Com\Chw\RedisLib::getInstance('REDIS_DEFAULT');
-		$redisHandle->select(2);
-		$dataCode=$redisHandle->get($dataKey);
+		$pageData=$dUserInfo->getPageShowList($option);	
+		$this->assign('pageData',$pageData);
 		
-		if(!$dataCode)
-		{
-			return $bRet;
-		}
+		$this->display('user_list');
+	}
+	
+	public function user_info_edit_pop()
+	{
 		
-		$redisHandle->del($dataKey);
 		
-		$dataCode=strtolower($dataCode);
-		$code=strtolower($code);
+		$option=array(
+			'id'=>I('get.id',0,'intval'),
+		);
 		
-		if($dataCode==$code)
-		{
-			$bRet=true;
-		}
+		$dUserInfo=D('UserInfo');
 		
-		if($bRet)
-		{
-			$whiteKey=sprintf('white_uuid_%s',$uuid);
-			
-			$redisHandle->select(1);
-			$redisHandle->setex($whiteKey,3600*24*7,100);
-		}
+		$pageOption=$dUserInfo->getShowMap();
+		$this->assign('pageOption',$pageOption);
 		
-		return $bRet;
+		$data=$dUserInfo->getData($option['id']);
+		$this->assign('data',$data);
+		
+		$this->display('user_info_edit_pop');
 	}
 }

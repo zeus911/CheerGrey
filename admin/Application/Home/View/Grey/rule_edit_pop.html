@@ -6,11 +6,14 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <title>编辑</title>
   <link href="/static/skin/default/style.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="/static/scripts/chosen/css/chosen.css?v=<php>print_r(time());</php>">
+  
   <script type="text/javascript" charset="utf-8" src="/static/scripts/jquery/jquery-1.11.2.min.js"></script>
   <script src="/static/scripts/layer/layer.min.js"></script>
   <script src="/static/scripts/laydate/laydate.js"></script>
-  <script type="text/javascript" charset="utf-8" src="/static/scripts/webuploader/webuploader.min.js"></script>
-  <script type="text/javascript" charset="utf-8" src="/static/js/uploader.js"></script>
+
+  <script src="/static/scripts/chosen/js/chosen.jquery.js?v=<php>print_r(time());</php>"></script>
+  
   <script type="text/javascript" charset="utf-8" src="/static/js/laymain.js"></script>
   <script type="text/javascript" charset="utf-8" src="/static/js/common.js"></script>
   <script src="/static/scripts/jquery/jquery.form.min.js"></script>
@@ -37,24 +40,65 @@
   </div>
 
   <div class="tab-content">
+     <dl>
+      <dt>应用站点</dt>
+      <dd>
+          <select name="site_id" class="remote_select" style="width: 300px;">
+            <option value="0">选择应用站点</option>
+            <foreach name="pageOption.siteList" item="vo" key="k">
+             <option value="{$k}" <eq name="data.site_id" value="$k">selected="selected"</eq>>{$vo}</option>
+            </foreach>
+        </select>
+          
+      </dd>
+    </dl>
     
     <dl>
-      <dt>规则站点</dt>
+      <dt>匹配对象</dt>
       <dd>
           <div class="rule-single-select">
-          <select name="site_id">
-            <option value="">选择站点</option>
-            <foreach name="pageOption.siteRuleList" item="vo" key="k">
-				<option value="{$k}" <eq name="data.site_id" value="$k">selected="selected"</eq>>{$vo}</option>
+          <select name="match_object">
+            <option value="">匹配对象</option>
+            <foreach name="pageOption.matchObjectList" item="vo" key="k">
+             <option value="{$k}" <eq name="data.match_object" value="$k">selected="selected"</eq>>{$vo}</option>
             </foreach>
           </select>
           </div>
       </dd>
     </dl>
     
+    <dl>
+      <dt>匹配操作符</dt>
+      <dd>
+          <div class="rule-single-select">
+          <select name="match_opp">
+            <option value="">匹配操作符</option>
+            <foreach name="pageOption.matchOppList" item="vo" key="k">
+             <option value="{$k}" <eq name="data.match_opp" value="$k">selected="selected"</eq>>{$vo}</option>
+            </foreach>
+          </select>
+          </div>
+      </dd>
+    </dl>
     
      <dl>
-      <dt>灰度模式</dt>
+      <dt>匹配规则</dt>
+      <dd>
+        <input class="input" name="match_value" value="{$data.match_value}" style="width: 300px;"/>
+      </dd>
+    </dl>
+    
+    <dl>
+      <dt>优先级</dt>
+      <dd>
+        <input class="input" name="order_no" value="{$data.order_no}" style="width: 300px;" />
+        <span style="padding-left: 10px; color: #B41316">1-100,数值越大,优先级越高</span>
+      </dd>
+    </dl>
+
+    
+     <dl>
+      <dt>节点模式</dt>
       <dd>
           <div class="rule-single-select">
           <select name="mode">
@@ -67,13 +111,21 @@
       </dd>
     </dl>
     
-
-     <dl>
-      <dt>租户代码</dt>
+    
+    <dl>
+      <dt>私有节点</dt>
       <dd>
-        <input class="input" name="tenant_code" value="{$data.tenant_code}"/>
+        <select name="backend_id" class="remote_select" style="width: 300px;">
+            <option value="0">选择后端节点</option>
+            <foreach name="pageOption.backendList" item="vo" key="k">
+             <option value="{$k}" <eq name="data.backend_id" value="$k">selected="selected"</eq>>{$vo}</option>
+            </foreach>
+        </select>
       </dd>
     </dl>
+    
+
+     
       
     <input type="hidden" name="id" value="{$data.id}" />
     </div>
@@ -105,7 +157,8 @@
   }
 
   $(function(){
-
+      
+	   $('.remote_select').chosen();
 
   });
 

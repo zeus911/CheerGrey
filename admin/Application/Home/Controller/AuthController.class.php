@@ -12,11 +12,34 @@ class AuthController extends BaseController
 	
 	private function checkLogin()
 	{
-		$uid=session('admin_uid');
-		if(!$uid)
+		
+		$dAuthInfo=D('AuthInfo');
+		$currentUserInfo=$dAuthInfo->getCurrentUserInfo();
+		
+		C('CURRENT_USER_INFO',$currentUserInfo);
+		
+		$userName=$currentUserInfo['username'];
+		
+		$authConfig=C('ACCOUNT_AUTH');
+		
+		$loginUrl=sprintf('%s%s',$authConfig['LOGIN_URL'],base64_encode($this->getCurrentUrl()));
+		
+		if(!$userName)
 		{
-			$this->show('<script language="javascript">window.top.location.href="/index/login.html";</script>','utf-8');
+			$this->show('<script language="javascript">window.top.location.href="'.$loginUrl.'";</script>','utf-8');
 			exit();
 		}
+	}
+	
+	private function getCurrentUrl()
+	{
+		$url='/';
+		
+		$siteHost=get_current_domain();
+		
+		$url=sprintf('http://%s%s',$siteHost,__SELF__);
+		
+		return $url;
+		
 	}
 }

@@ -26,16 +26,23 @@ class SystemMenuModel extends DataBaseModel
 		
 		$this->setShowMap('stateList',array(0=>'禁用',1=>'启用'));
 		
-		$level0DataList=$this->where(array('menu_level'=>0))->select();
-				
-		$menuLevel0List=array();
-		
+		$level0DataList=$this->where(array('menu_level'=>0))->select();			
+		$menuLevel0List=array();	
 		foreach($level0DataList as $item)
 		{
 			$menuLevel0List[$item['id']]=$item['menu_title'];
-		}
-		
+		}	
 		$this->setShowMap('menuLevel0List',$menuLevel0List);
+		
+		
+		$level1DataList=$this->where(array('menu_level'=>1))->select();			
+		$menuLevel1List=array();	
+		foreach($level1DataList as $item)
+		{
+			$menuLevel1List[$item['id']]=$item['menu_title'];
+		}	
+		$this->setShowMap('menuLevel1List',$menuLevel1List);
+		
 	}
 	
 	

@@ -12,9 +12,12 @@ class AuthController extends BaseController
 	
 	private function checkLogin()
 	{
-		$uid=session('admin_uid');
+		$dAuthInfo=D('AuthInfo');
+		$currentUserInfo=$dAuthInfo->getCurrentUserInfo();
 		
-		if(!$uid)
+		$userName=$currentUserInfo['username'];
+		
+		if(!$userName)
 		{
 			$this->ajaxCallMsg(301,'你没有登录或者登录状态过期,请重新登录!');
 		}

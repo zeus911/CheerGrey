@@ -5,12 +5,16 @@
   <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,initial-scale=1.0,user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <title>添加</title>
+  
   <link href="/static/skin/default/style.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="/static/scripts/chosen/css/chosen.css?v=<php>print_r(time());</php>">
+  
   <script type="text/javascript" charset="utf-8" src="/static/scripts/jquery/jquery-1.11.2.min.js"></script>
   <script src="/static/scripts/layer/layer.min.js"></script>
   <script src="/static/scripts/laydate/laydate.js"></script>
-  <script type="text/javascript" charset="utf-8" src="/static/scripts/webuploader/webuploader.min.js"></script>
-  <script type="text/javascript" charset="utf-8" src="/static/js/uploader.js"></script>
+  
+  <script src="/static/scripts/chosen/js/chosen.jquery.js?v=<php>print_r(time());</php>"></script>
+  
   <script type="text/javascript" charset="utf-8" src="/static/js/laymain.js"></script>
   <script type="text/javascript" charset="utf-8" src="/static/js/common.js"></script>
   <script src="/static/scripts/jquery/jquery.form.min.js"></script>
@@ -39,13 +43,13 @@
   <div class="tab-content">
 
      <dl>
-      <dt>配置服务器</dt>
+      <dt>配置服务</dt>
       <dd>
           <div class="rule-single-select">
-          <select name="config_id">
-            <option value="">选择配置服务器</option>
+          <select name="config_id" >
+            <option value="">选择配置服务</option>
             <foreach name="pageOption.configRuleList" item="vo" key="k">
-             <option value="{$k}">{$vo}</option>
+             <option value="{$k}" <eq name="option.config_id" value="$k">selected="selected"</eq>>{$vo}</option>
             </foreach>
           </select>
           </div>
@@ -55,7 +59,7 @@
     <dl>
       <dt>站点名称</dt>
       <dd>
-        <input class="input" name="rule_site_name" value=""/>
+        <input class="input" name="rule_site_name" value="" style="width: 300px;"/>
       </dd>
     </dl>
     
@@ -63,7 +67,7 @@
       <dt>HOST规则类别</dt>
       <dd>
           <div class="rule-single-select">
-          <select name="http_host_type">
+          <select name="http_host_type" >
             <option value="">选择规则类别</option>
             <foreach name="pageOption.httpHostTypeList" item="vo" key="k">
              <option value="{$k}">{$vo}</option>
@@ -77,7 +81,7 @@
     <dl>
       <dt>HOST规则</dt>
       <dd>
-        <input class="input" name="http_host" value=""/>
+        <input class="input" name="http_host" value="" style="width: 300px;"/>
       </dd>
     </dl>
      
@@ -85,7 +89,7 @@
       <dt>灰度模式</dt>
       <dd>
           <div class="rule-single-select">
-          <select name="mode">
+          <select name="mode" >
             <option value="">灰度模式</option>
             <foreach name="pageOption.modeList" item="vo" key="k">
              <option value="{$k}">{$vo}</option>
@@ -98,16 +102,24 @@
      <dl>
       <dt>全量节点</dt>
       <dd>
-        <input class="input" name="prod_node" value=""/>
-        <span style="padding-left: 10px; color: #B41316">格式:@backend_prod_xxx,xxx取值范围(0-9a-z_)</span>
+        <select name="prod_backend_id" class="remote_select" style="width: 300px;">
+            <option value="0">选择后端节点</option>
+            <foreach name="pageOption.backendList" item="vo" key="k">
+             <option value="{$k}">{$vo}</option>
+            </foreach>
+        </select>
       </dd>
     </dl>
      
      <dl>
       <dt>灰度节点</dt>
       <dd>
-        <input class="input" name="grey_node" value=""/>
-        <span style="padding-left: 10px; color: #B41316">格式:@backend_grey_xxx,xxx取值范围(0-9a-z_)</span>
+        <select name="grey_backend_id" class="remote_select" style="width: 300px;">
+            <option value="0">选择后端节点</option>
+            <foreach name="pageOption.backendList" item="vo" key="k">
+             <option value="{$k}">{$vo}</option>
+            </foreach>
+        </select>
       </dd>
     </dl>
       
@@ -135,7 +147,15 @@
   }
 
   $(function(){
-
+	  
+	 $('.remote_select').chosen();
+     
+	 $('select[name="config_id"]').change(function(){
+	 
+	     var configId=$(this).val();
+		 window.location.href='/grey/site_add_pop.html?config_id='+configId;
+	 
+	 });
 
   });
 

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,initial-scale=1.0,user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>添加</title>
+  <link href="/static/skin/default/style.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="/static/scripts/chosen/css/chosen.css?v=<php>print_r(time());</php>">
+  
+  <script type="text/javascript" charset="utf-8" src="/static/scripts/jquery/jquery-1.11.2.min.js"></script>
+  <script src="/static/scripts/layer/layer.min.js"></script>
+  <script src="/static/scripts/laydate/laydate.js"></script>
+ 
+  <script src="/static/scripts/chosen/js/chosen.jquery.js?v=<php>print_r(time());</php>"></script>
+ 
+  <script type="text/javascript" charset="utf-8" src="/static/js/laymain.js"></script>
+  <script type="text/javascript" charset="utf-8" src="/static/js/common.js"></script>
+  <script src="/static/scripts/jquery/jquery.form.min.js"></script>
+  <script src="/static/js/base.js"></script>
+</head>
+
+<body class="mainbody">
+
+<form method="post" action="/branch/code_branch_task_add_pop/wapi/ajax.html" id="form1">
+  <!--导航栏-->
+
+  <div class="line10"></div>
+  <!--/导航栏-->
+
+  <!--内容-->
+  <div id="floatHead" class="content-tab-wrap">
+    <div class="content-tab">
+      <div class="content-tab-ul-wrap">
+        <ul>
+			<li><a class="selected" href="javascript:;">添加</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content">
+
+
+    <dl>
+      <dt>所属产品组</dt>
+      <dd>
+           <select class="remote_select" name="department_id" style="width: 80%;">
+            <option value="0">选择产品组</option>
+            <foreach name="pageOption.departmentKvList" item="vo" key="k">
+            	<option value="{$k}" <eq name="option.department_id" value="$k">selected="selected"</eq>>{$vo}</option>
+            </foreach>
+          </select>
+          
+      </dd>
+    </dl>
+
+
+
+    <dl>
+      <dt>关联JIRA需求</dt>
+      <dd>
+           <select class="remote_select" name="story_id" style="width: 80%;">
+            <option value="">选择JIRA需求</option>
+          </select>
+          
+      </dd>
+    </dl>
+    
+     <dl>
+      <dt>RD工程师</dt>
+      <dd>
+           <select class="remote_select" name="rd_uid" style="width: 80%;">
+            <option value="0">选择RD工程师</option>
+             <foreach name="pageOption.rdDataList" item="vo" key="k">
+            	<option value="{$k}" <eq name="option.rd_uid" value="$k">selected="selected"</eq>>{$vo}</option>
+            </foreach>
+          </select>
+          
+      </dd>
+    </dl>
+    
+     <dl>
+      <dt>QA工程师</dt>
+      <dd>
+           <select class="remote_select" name="qa_uid" style="width: 80%;">
+            <option value="0">选择QA工程师</option>
+             <foreach name="pageOption.qaDataList" item="vo" key="k">
+            	<option value="{$k}" <eq name="option.qa_uid" value="$k">selected="selected"</eq>>{$vo}</option>
+            </foreach>
+          </select>
+          
+      </dd>
+    </dl>
+    
+   
+    </div>
+
+    <div class="page-footer">
+      <div class="btn-wrap">
+        <input type="hidden" name="task_type" value="fix_task" />
+        <input type="button" name="btnSubmit" value="保存" id="btnSubmit" class="btn btn-submit" data-callback="successCall" />
+      </div>
+    </div>
+
+    <!--/内容-->
+
+    <!--工具栏-->
+
+    <!--/工具栏-->
+</form>
+</body>
+<script language="javascript">
+
+  function successCall()
+  {
+    window.parent.location.reload();
+  }
+  
+  
+
+  $(function(){
+     
+	  $('.remote_select').chosen();
+	  
+	  $('select[name="department_id"]').chosen().change(function(){
+		  
+		  var thisVal=$(this).val();
+		  
+		  $('select[name="story_id"]').html('<option value="0">选择JIRA需求</option>');
+		  
+		  
+		  $.post('/branch/get_code_story_list/wapi/ajax.html',{department_id:thisVal},function(data){
+			  
+			  var errorCode=data.error_code;
+			  var errorMsg=data.msg;
+			  var returnData=data.data;
+			  
+			  if(!errorMsg)
+			  {
+				  errorMsg='网络异常,请稍候再试!';
+			  }
+			  
+			  if(errorCode!='0')
+			  {
+			     alertMsg(errorMsg,function(){});
+				 return;
+			  }
+
+			  $.each(returnData.dataList,function(k,v){
+				  $('select[name="story_id"]').append('<option value="'+v.id+'">【'+v.story_code+'】'+v.story_name+'</option>');
+			  });
+			  
+			  $('select[name="story_id"]').trigger("chosen:updated");
+			  
+		  });
+		  
+		  
+		  $('select[name="story_id"]').chosen().change(function(){
+			  var thisVal=$(this).val();
+			  
+			  $.post('/branch/get_code_story_user_list/wapi/ajax.html',{id:thisVal},function(data){
+				 
+				  var errorCode=data.error_code;
+				  var errorMsg=data.msg;
+				  var returnData=data.data;
+
+				  if(!errorMsg)
+				  {
+					  errorMsg='网络异常,请稍候再试!';
+				  }
+
+				  if(errorCode!='0')
+				  {
+					 alertMsg(errorMsg,function(){});
+					 return;
+				  }
+				  
+				  if(returnData.rd_uid){
+					  $('select[name="rd_uid"]').val(returnData.rd_uid);
+					  $('select[name="rd_uid"]').trigger("chosen:updated");
+				  }
+				  
+				  if(returnData.qa_uid){
+					  $('select[name="qa_uid"]').val(returnData.qa_uid);
+					  $('select[name="qa_uid"]').trigger("chosen:updated");
+				  }
+				  
+			  });
+			  
+		  });
+		  
+		  
+		  
+	  });
+	  
+	  
+
+  });
+
+
+</script>
+</html>
+
+
+

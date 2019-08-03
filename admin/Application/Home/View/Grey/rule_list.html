@@ -42,11 +42,20 @@
 
       
         <div class="menu-list">
+        
+         <div class="rule-single-select">
+            <select name="config_id" onchange="javascript:doSearch();">
+             <option value="0" <eq name="option.config_id" value="0">selected="selected"</eq>>选择配置服务</option>
+            <foreach name="pageOption.configRuleList" item="vo" key="k">
+            <option value="{$k}" <eq name="option.config_id" value="$k">selected="selected"</eq>>{$vo}</option>
+            </foreach>
+            </select>
+         </div>
           
           <div class="rule-single-select">
             <select name="site_id" onchange="javascript:doSearch();">
              <option value="0" <eq name="option.site_id" value="0">selected="selected"</eq>>选择站点</option>
-            <foreach name="pageOption.siteRuleList" item="vo" key="k">
+            <foreach name="pageOption.siteList" item="vo" key="k">
             <option value="{$k}" <eq name="option.site_id" value="$k">selected="selected"</eq>>{$vo}</option>
             </foreach>
             </select>
@@ -54,7 +63,7 @@
           
           <div class="rule-single-select">
             <select name="mode" onchange="javascript:doSearch();">
-             <option value="" <eq name="option.mode" value="">selected="selected"</eq>>选择灰度模式</option>
+             <option value="" <eq name="option.mode" value="">selected="selected"</eq>>选择节点模式</option>
             <foreach name="pageOption.modeList" item="vo" key="k">
             <option value="{$k}" <eq name="option.mode" value="$k">selected="selected"</eq>>{$vo}</option>
             </foreach>
@@ -84,24 +93,30 @@
     <tr>
 
       <th width="100" align="center">系统ID</th>
-      <th align="left" width="200">规则站点</th>
-      <th align="left" width="120">租户代码</th>
-      <th align="left" width="120">灰度模式</th>    
+      <th align="left" width="150">配置服务</th>
+      <th align="left">规则站点</th>
+      <th align="left" width="300">匹配逻辑</th>
+      <th align="center" width="80">优先级</th>
+      <th align="center" width="120">节点模式</th>    
+      <th align="left" width="250">后端节点</th>    
       <th align="left" width="180">上次更新时间</th>
-      <th align="left">操作</th>
+      <th align="left"  width="180">操作</th>
     </tr>
     
     <foreach name="pageData.dataList" item="vo">
     <tr>
       <td align="center">{$vo.id}</td>
+      <td align="left">{$vo.config_name}</td>
       <td align="left">{$vo.site_name}</td>
-      <td align="left">{$vo.tenant_code}</td> 
-      <td align="left">{$vo.mode_name}</td>
+      <td align="left">【{$vo.match_object_name}】【{$vo.match_opp_name}】【{$vo.match_value}】</td>
+      <td align="center">{$vo.order_no}</td> 
+      <td align="center">{$vo.mode_name}</td>
+      <td align="left">{$vo.backend_name}</td>
       <td align="left">{$vo.update_time}</td>
       <td align="left">
         <a href="javascript:;" class="btn-pop" data-title="修改[{$vo.rule_node_name}]" data-url="/grey/rule_edit_pop.html?id={$vo.id}">修改</a>
         &nbsp;
-        <a class="btn-action" href="javascript:;" data-url="/grey/rule_del/wapi/ajax.html?id={$vo.id}" data-callback="delCallBack">删除</a>
+        <a class="btn-action-confirm" href="javascript:;" data-url="/grey/rule_del/wapi/ajax.html?id={$vo.id}" data-callback="delCallBack">删除</a>
       </td>
     </tr>
     </foreach>
